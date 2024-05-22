@@ -1,35 +1,26 @@
-import java.util.*;
+package activities;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class Activity2 {
-    public static void main(String[] args) {
-        int[] number = {10, 10, 10, 54, -11, 10};
-        System.out.println("Original Array: " + Arrays.toString(number));
+    @Test
+    void notEnoughFunds() {
+        // Create an object for BankAccount class
+        BankAccount account = new BankAccount(9);
 
-        //Set constants
-        int searchNum = 10;
-        int fixedSum = 30;
-
-        //Print result
-        System.out.println("Result: " + result(number, searchNum, fixedSum));
+        // Assertion for exception
+        assertThrows(NotEnoughFundsException.class, () -> account.withdraw(10));
     }
 
-    public static boolean result(int[] numbers, int searchNum, int fixedSum) {
-        int temp_sum = 0;
-        //Loop through array
-        for (int number : numbers) {
-            //If value is 10
-            if (number == searchNum) {
-                //Add them
-                temp_sum += searchNum;
-            }
+    @Test
+    void enoughFunds() {
+        // Create an object for BankAccount class
+        BankAccount account = new BankAccount(100);
 
-            //Sum should not be more than 30
-            if (temp_sum > fixedSum) {
-                break;
-            }
-        }
-
-        //Return true if condition satisfies
-        return temp_sum == fixedSum;
+        // Assertion for no exceptions
+        assertDoesNotThrow(() -> account.withdraw(100));
     }
 }
-
