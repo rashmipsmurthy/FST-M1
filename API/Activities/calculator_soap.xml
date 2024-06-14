@@ -210,15 +210,17 @@
     <con:operation id="9ca96b52-3fd4-4b6d-b710-0238e7ba3b7f" isOneWay="false" action="http://tempuri.org/Add" name="Add" bindingOperationName="Add" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
       <con:settings/>
       <con:call id="f0e8bd1c-8061-4e18-94f5-59dc29ac3355" name="Add Request">
-        <con:settings/>
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
         <con:encoding>UTF-8</con:encoding>
         <con:endpoint>http://www.dneonline.com/calculator.asmx</con:endpoint>
         <con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/">\r
    <soap:Header/>\r
    <soap:Body>\r
       <tem:Add>\r
-         <tem:intA>?</tem:intA>\r
-         <tem:intB>?</tem:intB>\r
+         <tem:intA>5</tem:intA>\r
+         <tem:intB>5</tem:intB>\r
       </tem:Add>\r
    </soap:Body>\r
 </soap:Envelope>]]></con:request>
@@ -226,7 +228,9 @@
           <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
           <con:authType>No Authorization</con:authType>
         </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://tempuri.org/CalculatorSoap/AddRequest"/>
+        <con:wsrmConfig version="1.2"/>
       </con:call>
     </con:operation>
     <con:operation id="4aaf4529-e7d5-4431-8350-82ab79999578" isOneWay="false" action="http://tempuri.org/Divide" name="Divide" bindingOperationName="Divide" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
@@ -476,7 +480,7 @@
    <soap:Body>\r
       <tem:Add>\r
          <tem:intA>5</tem:intA>\r
-         <tem:intB>${#TestCase#intB}</tem:intB>\r
+         <tem:intB>25</tem:intB>\r
       </tem:Add>\r
    </soap:Body>\r
 </soap:Envelope>]]></con:request>
@@ -499,7 +503,17 @@
               <con:configuration>
                 <path>declare namespace ns1='http://tempuri.org/';
 //ns1:AddResponse[1]/ns1:AddResult[1]</path>
-                <content>55</content>
+                <content>30</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+                <ignoreComments>false</ignoreComments>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="XPath Match" id="6f6ba64c-e737-4bf8-b2f6-50f20f224e16" name="XPath Match 2">
+              <con:configuration>
+                <path>declare namespace tem='http://tempuri.org/';
+//tem:AddResponse[1]/tem:AddResult[1]</path>
+                <content>${Add Request#Response#declare namespace tem='http://tempuri.org/'; //tem:AddResponse[1]/tem:AddResult[1]}</content>
                 <allowWildcards>false</allowWildcards>
                 <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
                 <ignoreComments>false</ignoreComments>
