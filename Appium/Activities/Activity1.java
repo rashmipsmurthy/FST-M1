@@ -1,47 +1,49 @@
-package activities;
-
-import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.options.UiAutomator2Options;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
-import static org.testng.Assert.assertEquals;
+    public class Activity1 {
+        // Declare Android driver
+        AndroidDriver<MobileElement> driver;
 
+        @BeforeClass
+        public void setUp() throws MalformedURLException {
+            // Set the Desired Capabilities
+            DesiredCapabilities caps = new DesiredCapabilities();
+            caps.setCapability("deviceName", "<Your device name>");
+            caps.setCapability("platformName", "Android");
+            caps.setCapability("automationName", "UiAutomator2");
+            caps.setCapability("appPackage", "com.android.calculator2");
+            caps.setCapability("appActivity", ".Calculator");
+            caps.setCapability("noReset", true);
 
-public class Activity1 {
-    AndroidDriver driver;
-    // AppiumDriver driver;
-    @BeforeClass
-    public void setUp() throws MalformedURLException {
-        UiAutomator2Options caps = new UiAutomator2Options()
-                .setPlatformName("android")
-                .setAutomationName("UiAutomater2")
-                .setAppPackage("com.android.Calculator")
-                .setAppActivity(".Calculator")
-                .noReset();
+            // Instantiate Appium Driver
+            URL appServer = new URL("http://127.0.0.1:4723/wd/hub");
+            driver = new AndroidDriver<>(appServer, caps);
+        }
 
-        URL serverURL = new URL("http://localhost:4723/wd/hub");
+        @Test
+        public void add() {
+            // Using resource-id
+            driver.findElementById("digit_5").click();
+            driver.findElementByAccessibilityId("multiply").click();
+            driver.findElementByXPath("//android.widget.Button[@text='9']").click();
+            driver.findElementById("eq").click();
+            String result = driver.findElement(MobileBy.id("result")).getText();
+            System.out.println(result);
 
-        driver = new AndroidDriver(serverURL, caps);
+            Assert.assertEquals(result, "45");
+        }
+
+        @AfterClass
+        public void tearDown() {
+            driver.quit();
+        }
     }
-    @Test
-    public void multiplyTest(){
-        driver.findElement(AppiumBy.id("com.android.calculator2:id/digit_9")).click();
-        driver.findElement(AppiumBy.id("com.android.calculator2:id/op_mul")).click();
-        driver.findElement(AppiumBy.id("com.android.calculator2:id/digit_6")).click();
-        driver.findElement(AppiumBy.id("com.android.calculator2:id/eq")).click();
-        String result=driver.findElement(AppiumBy.id("result")).getText();
-        assertEquals(result,"=54");
-    }
-    @AfterClass
-    public void tearDown(){
-        driver.quit();
-
-    }
-}
